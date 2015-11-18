@@ -67,7 +67,7 @@
       if (toast && ! toast.deleting) { // Avoid clicking when fading out
         toast.deleting = true;
         toast.isOpened = false;
-        $animate.leave(toast.el).then(function() {
+        $animate.leave(toast.el, function() {
           if (toast.scope.options.onHidden) {
             toast.scope.options.onHidden(!!wasClicked, toast);
           }
@@ -133,9 +133,12 @@
         throw 'Target for toasts doesn\'t exist';
       }
 
-      $animate.enter(container, target).then(function() {
+      $animate.enter(container, target, null, function() {
+        console.log('BOOM')
         containerDefer.resolve();
       });
+
+      console.log($animate)
 
       return containerDefer.promise;
     }
@@ -159,17 +162,17 @@
       if (maxOpenedNotReached()) {
         newToast.open.resolve();
       }
-
       newToast.open.promise.then(function() {
+        console.log('open promise resolve')
         _createOrGetContainer(options).then(function() {
           newToast.isOpened = true;
           if (options.newestOnTop) {
-            $animate.enter(newToast.el, container).then(function() {
+            $animate.enter(newToast.el, container, null, function() {
               newToast.scope.init();
             });
           } else {
             var sibling = container[0].lastChild ? angular.element(container[0].lastChild) : null;
-            $animate.enter(newToast.el, container, sibling).then(function() {
+            $animate.enter(newToast.el, container, sibling, function() {
               newToast.scope.init();
             });
           }
