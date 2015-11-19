@@ -134,11 +134,8 @@
       }
 
       $animate.enter(container, target, null, function() {
-        console.log('BOOM')
         containerDefer.resolve();
       });
-
-      console.log($animate)
 
       return containerDefer.promise;
     }
@@ -163,7 +160,6 @@
         newToast.open.resolve();
       }
       newToast.open.promise.then(function() {
-        console.log('open promise resolve')
         _createOrGetContainer(options).then(function() {
           newToast.isOpened = true;
           if (options.newestOnTop) {
@@ -312,8 +308,16 @@
       tapToDismiss: true,
       target: 'body',
       templates: {
-        toast: 'directives/toast/toast.html',
-        progressbar: 'directives/progressbar/progressbar.html'
+        toast: '<div class="{{toastClass}} {{toastType}}" ng-click="tapToast()">' +
+               '  <div ng-switch on="allowHtml">' +
+               '    <div ng-switch-default ng-if="title" class="{{titleClass}}" aria-label="{{title}}">{{title}}</div>' +
+               '    <div ng-switch-default class="{{messageClass}}" aria-label="{{message}}">{{message}}</div>' +
+               '    <div ng-switch-when="true" ng-if="title" class="{{titleClass}}" ng-bind-html="title"></div>' +
+               '    <div ng-switch-when="true" class="{{messageClass}}" ng-bind-html="message"></div>' +
+               '  </div>' +
+               '  <progress-bar ng-if="progressBar"></progress-bar>' +
+               '</div>',
+        progressbar: '<div class="toast-progress"></div>'
       },
       timeOut: 5000,
       titleClass: 'toast-title',
@@ -333,7 +337,7 @@
     return {
       replace: true,
       require: '^toast',
-      templateUrl: function() {
+      template: function() {
         return toastrConfig.templates.progressbar;
       },
       link: linkFunction
@@ -407,7 +411,7 @@
   function toast($injector, $interval, toastrConfig, toastr) {
     return {
       replace: true,
-      templateUrl: function() {
+      template: function() {
         return toastrConfig.templates.toast;
       },
       controller: 'ToastController',

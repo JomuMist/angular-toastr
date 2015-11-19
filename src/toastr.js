@@ -134,11 +134,8 @@
       }
 
       $animate.enter(container, target, null, function() {
-        console.log('BOOM')
         containerDefer.resolve();
       });
-
-      console.log($animate)
 
       return containerDefer.promise;
     }
@@ -163,7 +160,6 @@
         newToast.open.resolve();
       }
       newToast.open.promise.then(function() {
-        console.log('open promise resolve')
         _createOrGetContainer(options).then(function() {
           newToast.isOpened = true;
           if (options.newestOnTop) {

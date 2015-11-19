@@ -10,7 +10,7 @@
     return {
       replace: true,
       require: '^toast',
-      templateUrl: function() {
+      template: function() {
         return toastrConfig.templates.progressbar;
       },
       link: linkFunction
