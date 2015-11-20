@@ -308,16 +308,8 @@
       tapToDismiss: true,
       target: 'body',
       templates: {
-        toast: '<div class="{{toastClass}} {{toastType}}" ng-click="tapToast()">' +
-               '  <div ng-switch on="allowHtml">' +
-               '    <div ng-switch-default ng-if="title" class="{{titleClass}}" aria-label="{{title}}">{{title}}</div>' +
-               '    <div ng-switch-default class="{{messageClass}}" aria-label="{{message}}">{{message}}</div>' +
-               '    <div ng-switch-when="true" ng-if="title" class="{{titleClass}}" ng-bind-html="title"></div>' +
-               '    <div ng-switch-when="true" class="{{messageClass}}" ng-bind-html="message"></div>' +
-               '  </div>' +
-               '  <progress-bar ng-if="progressBar"></progress-bar>' +
-               '</div>',
-        progressbar: '<div class="toast-progress"></div>'
+        toast: 'directives/toast/toast.html',
+        progressbar: 'directives/toast/progressbar.html',
       },
       timeOut: 5000,
       titleClass: 'toast-title',
@@ -337,7 +329,7 @@
     return {
       replace: true,
       require: '^toast',
-      template: function() {
+      templateUrl: function() {
         return toastrConfig.templates.progressbar;
       },
       link: linkFunction
@@ -411,7 +403,7 @@
   function toast($injector, $interval, toastrConfig, toastr) {
     return {
       replace: true,
-      template: function() {
+      templateUrl: function() {
         return toastrConfig.templates.toast;
       },
       controller: 'ToastController',

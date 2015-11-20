@@ -9,7 +9,7 @@
   function toast($injector, $interval, toastrConfig, toastr) {
     return {
       replace: true,
-      template: function() {
+      templateUrl: function() {
         return toastrConfig.templates.toast;
       },
       controller: 'ToastController',
